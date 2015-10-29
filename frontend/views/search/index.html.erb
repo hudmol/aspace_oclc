@@ -1,37 +1,31 @@
 <%= setup_context(:title => I18n.t("plugins.oclc.search_catalog"), :controller => :oclc) %>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="record-pane">
-      <div class="row-fluid">
-        <div class="span12">
-          <h2><%= I18n.t("plugins.oclc.search_catalog") %></h2>
+<div class="record-pane">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2><%= I18n.t("plugins.oclc.search_catalog") %></h2>
 
-          <%= render_aspace_partial :partial => "shared/flash_messages" %>
+      <%= render_aspace_partial :partial => "shared/flash_messages" %>
 
-          <%= form_tag({:controller => :oclc, :action => :import}, {:id => "oclc_search", :class => "form-search", :method => "POST"}) do |form| %>
-            <div class='control-group required'> 
-             <label class='control-label' for="oclc-search-query"><%= I18n.t("plugins.oclc.enter_ids") %></label>
-             <div class='controls' width="50%"> 
-              <textarea name="ids" class="oclc-search-query input-medium" id="oclc-search-query" rows="3"></textarea>
-              </div>
-            </div>              
-            <div class='control-group'> 
-              <button type="submit" class="btn btn-primary" id="search-submit" name="preview" data-loading-text="<%= I18n.t('plugins.oclc.messages.getting_records') %>">
-               <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
-               <%= I18n.t("plugins.oclc.actions.preview") %>
-              </button>
-              <button type="submit" class="btn btn-primary" id="import-submit" disabled="disabled" data-loading-text="<%= I18n.t('plugins.oclc.messages.importing_records') %>">
-               <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
-               <%= I18n.t("plugins.oclc.actions.import") %>
-              </button>
-            </div>
-          <% end %>
-
-          <div id="results">
-            
-          </div>
+      <%= form_tag({:controller => :oclc, :action => :import}, {:id => "oclc_search", :class => "form-search", :method => "POST"}) do |form| %>
+        <div class='form-group required'>
+         <label for="oclc-search-query"><%= I18n.t("plugins.oclc.enter_ids") %></label>
+         <textarea name="ids" class="oclc-search-query form-control" id="oclc-search-query" rows="3"></textarea>
         </div>
+        <div class='form-group'>
+          <button type="submit" class="btn btn-primary" id="search-submit" name="preview" data-loading-text="<%= I18n.t('plugins.oclc.messages.getting_records') %>">
+           <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
+           <%= I18n.t("plugins.oclc.actions.preview") %>
+          </button>
+          <button type="submit" class="btn btn-primary" id="import-submit" disabled="disabled" data-loading-text="<%= I18n.t('plugins.oclc.messages.importing_records') %>">
+           <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
+           <%= I18n.t("plugins.oclc.actions.import") %>
+          </button>
+        </div>
+      <% end %>
+
+      <div id="results">
+
       </div>
     </div>
   </div>
