@@ -54,6 +54,8 @@ class OCLCBibGetter < Struct.new(:base_url, :key, :secret, :principal_id)
         end
       rescue OCLCMetadataException => e
         records << {:oclcn => oclcn, :error => e.message}
+      rescue Exception => e
+        records << {:oclc => oclcn, :error => e.message}
       end
     end
 
@@ -63,7 +65,6 @@ class OCLCBibGetter < Struct.new(:base_url, :key, :secret, :principal_id)
 
   def get(oclcn)
     unless cache.has_key?(oclcn)
-
       @wskey ||= OCLC::Auth::WSKey.new(key, secret)
 
       url = "#{base_url}/#{oclcn.to_s}?classificationScheme=LibraryOfCongress"
@@ -75,6 +76,8 @@ class OCLCBibGetter < Struct.new(:base_url, :key, :secret, :principal_id)
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
+      http.ssl_version = :TLSv1
+
       response = http.start do |http| 
         http.request(request)
       end

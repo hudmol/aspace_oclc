@@ -53,7 +53,11 @@ class OclcController <  ApplicationController
 
     begin
       files = record_getter.write_records(oclcns)
-      job = Job.new("marcxml_accession", 
+      job = Job.new("import_job",
+                    {
+                      "import_type" => "marcxml_accession",
+                      "jsonmodel_type" => "import_job"
+                    },
                     Hash[files.map {|file| ["oclc_import_#{SecureRandom.uuid}", file] }])
         
 
@@ -62,6 +66,8 @@ class OclcController <  ApplicationController
 
       # response = job.upload
       response = string_based_upload(job)
+
+      Rails.logger.debug(response)
 
       render :json => {'job_uri' => url_for(:controller => :jobs, :action => :show, :id => response['id'])}
     rescue
@@ -81,7 +87,9 @@ class OclcController <  ApplicationController
 
     payload = Hash[upload_files].merge('job' => job.instance_variable_get(:@job).to_json)
 
-    response = JSONModel::HTTP.post_form(JSONModel(:job).uri_for(nil),
+    Rails.logger.debug(payload)
+
+    response = JSONModel::HTTP.post_form("#{JSONModel(:job).uri_for(nil)}_with_files",
                                          payload,
                                          :multipart_form_data)
 
